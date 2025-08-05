@@ -611,7 +611,8 @@ def dmrg_cross(function, N, eps=1e-9, nswp=10, x_start=None, kick=2, dtype=tn.fl
             V = tn.diag(S) @ V
             UK = tn.randn((U.shape[0], kick), dtype=dtype, device=device)
             U, Rtemp = QR(tn.cat((U, UK), 1))
-            radd = U.shape[1] - rnew
+            #radd = U.shape[1] - rnew
+            radd = UK.shape[1]
             if radd > 0:
                 V = tn.cat(
                     (V, tn.zeros((radd, V.shape[1]), dtype=dtype, device=device)), 0)

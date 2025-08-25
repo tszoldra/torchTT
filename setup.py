@@ -1,3 +1,4 @@
+from joblib.memory import extract_first_line
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 import platform
@@ -39,6 +40,10 @@ if os_name in ['Linux', 'Darwin']:
         #             ])
         #     ]
         # )
+        if os_name == 'Darwin':
+            extra_link_args=['-Wl', '-lm']
+        else:
+            extra_link_args = ['-Wl,--no-as-needed', '-lm']
         setup(
             cmdclass={'build_ext': BuildExtension},
             ext_modules=[
@@ -52,7 +57,7 @@ if os_name in ['Linux', 'Darwin']:
                         '-std=c++17',
                         '-Wno-c++11-narrowing', '-w', '-O3',
                     ],
-                    extra_link_args=['-Wl,--no-as-needed', '-lm'],
+                    extra_link_args=extra_link_args,
                 )
             ],
         )
